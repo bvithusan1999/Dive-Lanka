@@ -1,5 +1,6 @@
-// src/components/BillForm.js
+// src/components/BillForm.jsx
 import React, { useState } from 'react';
+import './BillForm.scss';
 
 const BillForm = ({ onAddBill }) => {
   const [formData, setFormData] = useState({
@@ -45,7 +46,7 @@ const BillForm = ({ onAddBill }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="bill-form">
       <div>
         <label>
           Invoice Number:
@@ -77,7 +78,7 @@ const BillForm = ({ onAddBill }) => {
         </label>
       </div>
       {formData.items.map((item, index) => (
-        <div key={index}>
+        <div key={index} className="item-row">
           <label>
             Description:
             <input type="text" name="description" value={item.description} onChange={(e) => handleItemChange(index, e)} required />

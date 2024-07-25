@@ -1,0 +1,20 @@
+/* src/components/BillForm.scss */
+.bill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item-row {
+  display: flex;
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  margin-top: 1rem;
+}

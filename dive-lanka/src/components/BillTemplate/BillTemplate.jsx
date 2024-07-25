@@ -1,6 +1,6 @@
-// src/components/BillTemplate.js
+// src/components/BillTemplate.jsx
 import React from 'react';
-import './BillTemplate.css'; // Import the CSS file for styling
+import './BillTemplate.scss';
 
 const BillTemplate = React.forwardRef(({ bill }, ref) => (
   <div ref={ref} className="bill-template">
