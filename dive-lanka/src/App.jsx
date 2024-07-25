@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React, { useRef, useState } from 'react';
+import BillForm from './components/BillForm';
+import BillTemplate from './components/BillTemplate';
+import ReactToPrint from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import './App.css'; // Import any global styles
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [bill, setBill] = useState(null);
+  const billRef = useRef();
+
+  const handleAddBill = (billData) => {
+    setBill(billData);
+  };
+
+  const handlePrint = () => {
+    const input = billRef.current;
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 0, 0);
+        pdf.save('bill.pdf');
+      });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <BillForm onAddBill={handleAddBill} />
+      {bill && (
+        <div>
+          <BillTemplate ref={billRef} bill={bill} />
+          <ReactToPrint
+            trigger={() => <button>Print Bill</button>}
+            content={() => billRef.current}
+          />
+          <button onClick={handlePrint}>Export as PDF</button>
+        </div>
+      )}
+    </div>
+  );
+};
 
-export default App
+export default App;
